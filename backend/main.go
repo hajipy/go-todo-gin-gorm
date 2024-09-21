@@ -147,6 +147,20 @@ func main() {
 		context.JSON(http.StatusOK, todo)
 	})
 
+	server.DELETE("/todo/:id", func(context *gin.Context) {
+		var todo Todo
+		if err := db.First(&todo, context.Param("id")).Error; err != nil {
+			context.JSON(http.StatusNotFound, gin.H{
+				"error": fmt.Sprintf("Todo with ID %s not found", context.Param("id")),
+			})
+			return
+		}
+
+		db.Delete(&todo)
+
+		context.JSON(http.StatusNoContent, nil)
+	})
+
 	if err := server.Run(); err != nil {
 		log.Fatalf("Failed to run server: %v", err)
 	}
