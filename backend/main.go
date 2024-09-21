@@ -79,6 +79,22 @@ func main() {
 		})
 	})
 
+	server.GET("/todo", func(context *gin.Context) {
+		var todos []Todo
+		db.Order("created_at asc").Find(&todos)
+
+		var response []gin.H
+		for _, todo := range todos {
+			response = append(response, gin.H{
+				"id":           todo.ID,
+				"title":        todo.Title,
+				"completed_at": todo.CompletedAt,
+			})
+		}
+
+		context.JSON(http.StatusOK, response)
+	})
+
 	server.POST("/todo", func(context *gin.Context) {
 		todo := &Todo{Title: "todo"}
 		db.Create(todo)
