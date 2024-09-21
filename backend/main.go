@@ -26,6 +26,27 @@ type Todo struct {
 	CompletedAt *time.Time
 }
 
+func connectDB(dbDsn string, maxRetries int) (*gorm.DB, error) {
+	var db *gorm.DB
+	var err error
+
+	waitTime := 1 * time.Second
+
+	for i := 0; i < maxRetries; i++ {
+		db, err = gorm.Open(mysql.Open(dbDsn), &gorm.Config{})
+		if err == nil {
+			return db, nil
+		}
+
+		log.Printf("Failed to connect to database (attempt %d/%d): %v", i+1, maxRetries, err)
+
+		time.Sleep(waitTime)
+		waitTime *= 2
+	}
+
+	return nil, err
+}
+
 func main() {
 	config := &Config{}
 	if err := env.Parse(config); err != nil {
@@ -40,10 +61,10 @@ func main() {
 		config.DBName,
 	)
 
-	// connect mysql with gorm
-	db, err := gorm.Open(mysql.Open(dbDsn), &gorm.Config{})
+	maxRetries := 3
+	db, err := connectDB(dbDsn, maxRetries)
 	if err != nil {
-		log.Fatalf("Failed to connect database: %v", err)
+		log.Fatalf("Failed to connect to database after %d attempts: %v", maxRetries, err)
 	}
 
 	if err := db.AutoMigrate(&Todo{}); err != nil {
