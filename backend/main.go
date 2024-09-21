@@ -81,12 +81,6 @@ func main() {
 
 	server := gin.Default()
 
-	server.GET("/ping", func(context *gin.Context) {
-		context.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-
 	server.GET("/todo", func(context *gin.Context) {
 		var todos []Todo
 		db.Order("created_at asc").Find(&todos)
