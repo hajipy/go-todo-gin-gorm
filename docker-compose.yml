@@ -7,11 +7,11 @@ services:
       - ./backend:/app
       - /app/go/pkg/mod
     environment:
-      - DB_HOST=db
-      - DB_PORT=3306
-      - DB_USER=todo
-      - DB_PASSWORD=todo
-      - DB_NAME=todo
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: todo
+      DB_PASSWORD: todo
+      DB_NAME: todo
     depends_on:
       - db
 
