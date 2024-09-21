@@ -1,4 +1,20 @@
 services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+      - /app/go/pkg/mod
+    environment:
+      - TODO_DB_HOST=db
+      - TODO_DB_PORT=3306
+      - TODO_DB_USER=todo
+      - TODO_DB_PASSWORD=todo
+      - TODO_DB_NAME=todo
+    depends_on:
+      - db
+
   db:
     image: mysql:8.4.2
     environment:
