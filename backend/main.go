@@ -26,6 +26,10 @@ type Todo struct {
 	CompletedAt *time.Time
 }
 
+type NewTodo struct {
+	Title string `json:"title" binding:"required"`
+}
+
 func connectDB(dbDsn string, maxRetries int) (*gorm.DB, error) {
 	var db *gorm.DB
 	var err error
@@ -96,7 +100,15 @@ func main() {
 	})
 
 	server.POST("/todo", func(context *gin.Context) {
-		todo := &Todo{Title: "todo"}
+		var newTodo NewTodo
+		if err := context.ShouldBindJSON(&newTodo); err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		todo := &Todo{Title: newTodo.Title}
 		db.Create(todo)
 
 		context.JSON(http.StatusCreated, todo)
