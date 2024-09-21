@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 	"net/http"
-)
 
-import "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	server := gin.Default()
