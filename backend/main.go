@@ -109,7 +109,11 @@ func main() {
 		todo := &Todo{Title: newTodo.Title}
 		db.Create(todo)
 
-		context.JSON(http.StatusCreated, todo)
+		context.JSON(http.StatusCreated, gin.H{
+			"id":           todo.ID,
+			"title":        todo.Title,
+			"completed_at": todo.CompletedAt,
+		})
 	})
 
 	server.PATCH("/todo/:id", func(context *gin.Context) {
@@ -138,7 +142,11 @@ func main() {
 
 		db.Save(&todo)
 
-		context.JSON(http.StatusOK, todo)
+		context.JSON(http.StatusOK, gin.H{
+			"id":           todo.ID,
+			"title":        todo.Title,
+			"completed_at": todo.CompletedAt,
+		})
 	})
 
 	server.DELETE("/todo/:id", func(context *gin.Context) {
