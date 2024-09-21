@@ -30,6 +30,10 @@ type NewTodo struct {
 	Title string `json:"title" binding:"required"`
 }
 
+type UpdateTodo struct {
+	IsCompleted *bool `json:"is_completed" binding:"required"`
+}
+
 func connectDB(dbDsn string, maxRetries int) (*gorm.DB, error) {
 	var db *gorm.DB
 	var err error
@@ -112,6 +116,35 @@ func main() {
 		db.Create(todo)
 
 		context.JSON(http.StatusCreated, todo)
+	})
+
+	server.PATCH("/todo/:id", func(context *gin.Context) {
+		var updateTodo UpdateTodo
+		if err := context.ShouldBindJSON(&updateTodo); err != nil {
+			context.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		var todo Todo
+		if err := db.First(&todo, context.Param("id")).Error; err != nil {
+			context.JSON(http.StatusNotFound, gin.H{
+				"error": fmt.Sprintf("Todo with ID %s not found", context.Param("id")),
+			})
+			return
+		}
+
+		if *updateTodo.IsCompleted {
+			now := time.Now()
+			todo.CompletedAt = &now
+		} else {
+			todo.CompletedAt = nil
+		}
+
+		db.Save(&todo)
+
+		context.JSON(http.StatusOK, todo)
 	})
 
 	if err := server.Run(); err != nil {
