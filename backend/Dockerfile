@@ -1,7 +1,13 @@
 FROM golang:1.23.1-alpine3.20
 
+WORKDIR /app
+
 RUN go install github.com/air-verse/air@latest
 
-WORKDIR /app
+COPY go.mod go.sum ./
+
+RUN go mod download
+
+COPY . ./
 
 CMD ["air"]
