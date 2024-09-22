@@ -2,7 +2,7 @@ name: backend-lint
 on:
   pull_request:
     paths:
-      - "**.go"
+      - "*/**.go"
       - .github/workflows/backend-lint.yml
 jobs:
   golangci-lint:
