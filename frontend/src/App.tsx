@@ -1,11 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import viteLogo from "/vite.svg";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+type Todo = {
+  id: number;
+  title: string;
+  completed_at: string;
+};
+
 function App() {
   const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    fetch(`${backendUrl}/todo`)
+      .then((res) => res.json())
+      .then((data) => setTodos(data));
+  }, []);
 
   return (
     <>
@@ -29,6 +44,16 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <div>
+        <h2>TODO</h2>
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id}>
+              {todo.id} {todo.title} {todo.completed_at}
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 }
