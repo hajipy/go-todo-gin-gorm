@@ -4,6 +4,7 @@ on:
     paths:
       - "*/**.go"
       - .github/workflows/backend-lint.yml
+      - backend/.golangci.yml
 jobs:
   golangci-lint:
     runs-on: ubuntu-latest
@@ -15,5 +16,5 @@ jobs:
         uses: reviewdog/action-golangci-lint@v2
         with:
           workdir: backend/
-          reporter: "github-pr-review"
+          reporter: github-pr-review
           fail_on_error: true
