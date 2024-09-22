@@ -1,5 +1,5 @@
 # go-todo-gin-gorm
-This is a personal learning project using Go, Gin, and GORM to practice web API development and database operations.
+This is a personal learning project focused on mastering Go, Gin, and GORM. The frontend uses React, but any frontend framework could be used.
 
 ## Technologies Used
 
@@ -10,11 +10,19 @@ This is a personal learning project using Go, Gin, and GORM to practice web API 
 - **Database**: MySQL (or any compatible SQL database)
 
 ### Frontend
-- **WIP**: The frontend will be built using React in the future.
+- **UI Library**: React
+- **State Management**: React Hooks
+- **API Integration**: Fetch API for interaction with backend
+- **Build Tool**: Vite
+- **Code Formatting & Linting**: Biome
 
 ### Common Tools
 - **Containerization**: Docker
 - **Service Orchestration**: Docker Compose
+
+## Prerequisites
+- **Docker**: Ensure Docker is installed and running (latest version recommended)
+- **Docker Compose**: Make sure Docker Compose is available (part of Docker Desktop or standalone)
 
 ## How to Run
 1. Run Docker Compose to start the backend and frontend services:
@@ -23,11 +31,11 @@ This is a personal learning project using Go, Gin, and GORM to practice web API 
    ```
 2. Access the services:
    - **Backend**: `http://localhost:8080`
-   - **Frontend**: **WIP**
+   - **Frontend**: `http://localhost:5173`
    - **Database (MySQL)**: Accessible on port `33306` (e.g., `mysql://localhost:33306`)
 
 ## Future Plans
-- Build a simple frontend using React to interact with the backend API.
-    - Display a list of todos.
-    - Add new todos through a form.
-    - Mark todos as completed or delete them.
+- Improve UI/UX
+    - Add basic styling for better design
+- Refactor Frontend
+    - Split code into well-structured components for clarity
