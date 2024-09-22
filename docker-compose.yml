@@ -14,6 +14,16 @@ services:
     depends_on:
       - db
 
+  frontend:
+    build: ./frontend
+    environment:
+      VITE_BACKEND_URL: http://localhost:8080
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+
   db:
     image: mysql:8.4.2
     environment:
