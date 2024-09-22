@@ -14,7 +14,6 @@ jobs:
       - name: golangci-lint
         uses: reviewdog/action-golangci-lint@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           workdir: backend/
           reporter: "github-pr-review"
           fail_on_error: true
