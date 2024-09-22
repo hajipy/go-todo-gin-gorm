@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/caarlos0/env/v11"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -80,6 +81,11 @@ func main() {
 	}
 
 	server := gin.Default()
+
+	server.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://localhost:5173"},
+		AllowMethods: []string{"GET", "POST", "PATCH", "DELETE"},
+	}))
 
 	server.GET("/todo", func(context *gin.Context) {
 		var todos []Todo
