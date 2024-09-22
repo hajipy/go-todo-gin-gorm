@@ -7,17 +7,19 @@ on:
       - "**/*.ts"
       - "**/*.tsx"
       - .github/workflows/frontend-lint.yml
-      - frontend/eslint.config.js
+      - frontend/biome.json
 jobs:
-  eslint:
+  biome-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: eslint
-        uses: reviewdog/action-eslint@v1
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
         with:
-           workdir: frontend/
-           reporter: github-pr-review
-           fail_on_error: true
+          version: ""
+          working-dir: "frontend"
+
+      - name: Run Biome
+        run: biome ci .
